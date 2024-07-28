@@ -43,6 +43,24 @@ function serverHandler(req, res) {
         }
     }
 
+    if (req.method === 'GET' && req.url === '/notes'){
+        let notes = [
+            {
+                id: 1,
+                title:"Note Title"
+            },
+            {
+                id: 2,
+                title: "Title 2"
+            }
+        ];
+
+res.statusCode = 200;
+res.setHeader("Content-Type", "application/json");
+res.end(JSON.stringify(notes));
+
+    }
+
     // If the request method is "GET" AND the request url is '/notes'
     // b. If request method is GET and URL is '/notes', handle as follows:
     //     i. Define an array of notes
@@ -55,3 +73,8 @@ function serverHandler(req, res) {
 server.listen(PORT, HOSTNAME, () => {
     console.log(`Server is running at ${HOSTNAME}:${PORT}`)
 });
+
+
+
+
+

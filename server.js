@@ -55,19 +55,12 @@ function serverHandler(req, res) {
             }
         ];
 
-res.statusCode = 200;
-res.setHeader("Content-Type", "application/json");
-res.end(JSON.stringify(notes));
-
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify(notes));
     }
 
-    // If the request method is "GET" AND the request url is '/notes'
-    // b. If request method is GET and URL is '/notes', handle as follows:
-    //     i. Define an array of notes
-    //     ii. Set response status to 200
-    //     iii. Set response header for content type as 'application/json'
-    //     iv. End response with JSON string of notes array
-}
+};
 
 // HTTP: Start Server
 server.listen(PORT, HOSTNAME, () => {

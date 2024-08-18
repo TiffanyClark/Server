@@ -13,6 +13,20 @@ const fs = require('fs');
 const PORT = 3000;
 const HOSTNAME = 'localhost';
 
+//Helper Functions
+function readNotes(callback){
+    const filePath = path.resolve(__dirname, 'notes.json');
+    fs.readFile(filePath, "utf-8",(err,data)=>{
+        if(err){
+            callback(err, null);
+        }else{
+            callback(null, JSON.parse(data));
+        }
+    });
+}
+
+//CRUD function
+
 // HTTP: Create the Server
 const server = http.createServer(serverHandler);
 
@@ -41,23 +55,24 @@ function serverHandler(req, res) {
             // File System: Create stream of file
             fs.createReadStream(filePath).pipe(res);
         }
-    }
-
-    if (req.method === 'GET' && req.url === '/notes'){
-        let notes = [
-            {
-                id: 1,
-                title:"Note Title"
-            },
-            {
-                id: 2,
-                title: "Title 2"
+    } else if (req.method === 'GET' && req.url === '/notes'){
+        readNotes((err, notes) => {
+            if(err){
+                res.statusCode = 500;
+                res.setHeader("Content-Type", "text/html");
+                res.end(`
+                    <html>
+                        <body>
+                            <h3>Internal Server Error</h3>
+                        </body>
+                    </html>
+                `);
+            }else{
+                res.statusCode = 200;
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify(notes));
             }
-        ];
-
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify(notes));
+        })
     }
 
 };
